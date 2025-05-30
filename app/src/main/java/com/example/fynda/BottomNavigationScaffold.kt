@@ -47,8 +47,7 @@ fun currentRoute(navController: NavController): String? {
 fun BottomNavigationScaffold(
     modifier: Modifier = Modifier,
     parentNavController: NavController,
-    authViewModel: AuthViewModel,
-    serviceRepository: ServiceRepository
+    authViewModel: AuthViewModel
 ) {
     val childNavController = rememberNavController()
     val currentRoute = currentRoute(childNavController)
@@ -119,7 +118,7 @@ fun BottomNavigationScaffold(
                 HomeScreen(modifier = modifier, navController = parentNavController, authViewModel = authViewModel)
             }
             composable("Services") {
-                AddServiceScreen(navController = parentNavController, authViewModel = authViewModel, serviceRepository = serviceRepository)
+                AddServiceScreen(navController = parentNavController, authViewModel = authViewModel)
             }
             composable("Profile") {
                 ProfileScreen(modifier = modifier, navController = parentNavController, authViewModel = authViewModel)

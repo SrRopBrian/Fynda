@@ -51,12 +51,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.fynda.AddServiceState
-import com.example.fynda.AddServiceViewModel
 import com.example.fynda.AuthViewModel
 import com.example.fynda.R
-import com.example.fynda.ServiceRepository
-import com.example.fynda.ViewModelFactory
 
 data class Service(
     val serviceName: String = "",
@@ -111,17 +107,10 @@ fun ServiceCategoryDropDown(
 @Composable
 fun AddServiceScreen(
     navController: NavController,
-    addServiceViewModel: AddServiceViewModel = viewModel(),
-    authViewModel: AuthViewModel,
-    serviceRepository: ServiceRepository
+    authViewModel: AuthViewModel
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val uiState by addServiceViewModel.uiState.collectAsState()
-
-    val addServiceViewModel: AddServiceViewModel = viewModel(
-        factory = ViewModelFactory(authViewModel, serviceRepository)
-    )
 
     // state variables to capture user input
     var serviceName by remember { mutableStateOf("")}
@@ -307,7 +296,6 @@ fun AddServiceScreen(
                     endTime = endTime,
                     imageUrl = imageUri?.toString()
                 )
-                addServiceViewModel.addService(service)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -315,14 +303,6 @@ fun AddServiceScreen(
             )
         ) {
             Text(text = "Save", style = MaterialTheme.typography.labelLarge)
-        }
-
-        // handle Ui state changes
-        when (uiState) {
-            is AddServiceState.Loading -> Text("Loading...")
-            is AddServiceState.Success -> Text((uiState as AddServiceState.Success).message)
-            is AddServiceState.Error -> Text((uiState as AddServiceState.Error).message)
-            else -> {}
         }
     }
 }
