@@ -8,6 +8,24 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+// User data class to represent user profiles
+data class FyndaUser(
+    val uid: String = "",
+    val userName: String = "",
+    val email: String = "",
+    val phoneNumber: String = "",
+    val location: String = "",
+    val role: String = ""
+)
+
+// finite set of possible authentication states
+sealed class AuthState{
+    object Authenticated : AuthState()
+    object Unauthenticated : AuthState()
+    object Loading : AuthState()
+    data class Error(val message : String) : AuthState()
+}
+
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -33,7 +51,11 @@ class AuthViewModel : ViewModel() {
     }
 
     private fun fetchUserProfile() {
+        // get userId and prevent crashing if not existent
         val userId = auth.currentUser?.uid ?: return
+
+        // fetch user profile from Firestore, convert it to a FyndaUser object and update _userProfile
+        // set _userProfile to null or if fetching fails
         firestore.collection("users").document(userId)
             .get()
             .addOnSuccessListener { document ->
@@ -41,7 +63,7 @@ class AuthViewModel : ViewModel() {
                     val user = document.toObject(FyndaUser::class.java)
                     _userProfile.value = user
                 } else {
-                    _userProfile.value = null // No user profile found
+                    _userProfile.value = null
                 }
             }
             .addOnFailureListener {
@@ -49,6 +71,7 @@ class AuthViewModel : ViewModel() {
             }
     }
 
+    // make updates to the user's profile details
     fun updateProfile(userName: String, phoneNumber: String, location: String) {
         val userId = auth.currentUser?.uid ?: return
 
@@ -58,7 +81,6 @@ class AuthViewModel : ViewModel() {
             "location" to location
         )
 
-        // make updates in Firestore
         firestore.collection("users").document(userId)
             .update(updatedData)
             .addOnSuccessListener {
@@ -74,31 +96,44 @@ class AuthViewModel : ViewModel() {
             }
     }
 
+    // login function - change auth state and fetch details if successful
+    // throws an error if authentication fails
     fun login(email : String, password : String) {
         if (email.isEmpty() || password.isEmpty()) {
-            _authState.value = AuthState.Error("Provide your complete details.")
-            return
-        }
-
-        _authState.value = AuthState.Loading
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful){
-                    _authState.value = AuthState.Authenticated
-                    fetchUserProfile()
-                } else {
-                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong!")
-                }
-            }
-    }
-
-    fun signup(userName: String, email : String, password : String, phoneNumber: String, location: String, role: String) {
-        if (userName.isEmpty() ||email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || location.isEmpty() || role.isEmpty()) {
             _authState.value = AuthState.Error("Please provide your complete details.")
             return
         }
 
         _authState.value = AuthState.Loading
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _authState.value = AuthState.Authenticated
+                    fetchUserProfile()
+                } else {
+                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong! Try again")
+                }
+            }
+    }
+
+    // signup functionality
+    fun signup(
+        userName: String,
+        email: String,
+        password: String,
+        phoneNumber: String,
+        location: String,
+        role: String
+    ) {
+        // throw an error if any of the details are missing
+        if (userName.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || location.isEmpty() || role.isEmpty()) {
+            _authState.value = AuthState.Error("Please provide your complete details.")
+            return
+        }
+
+        _authState.value = AuthState.Loading
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful){
@@ -113,7 +148,7 @@ class AuthViewModel : ViewModel() {
                     )
                     saveUserToFirestore(newUser)
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong!")
+                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong! Try again.")
                 }
             }
     }
@@ -136,19 +171,3 @@ class AuthViewModel : ViewModel() {
     }
 }
 
-// User data class to represent user profiles
-data class FyndaUser(
-    val uid: String = "",
-    val userName: String = "",
-    val email: String = "",
-    val phoneNumber: String = "",
-    val location: String = "",
-    val role: String = ""
-)
-
-sealed class AuthState{
-    object Authenticated : AuthState()
-    object Unauthenticated : AuthState()
-    object Loading : AuthState()
-    data class Error(val message : String) : AuthState()
-}
