@@ -16,7 +16,7 @@ fun FyndaNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) 
         composable("Login") { LoginScreen(modifier, navController, authViewModel) }
         composable("Signup") { SignupScreen(modifier, navController, authViewModel) }
 
-        composable("Main") {
+        composable("Home") {
             BottomNavigationScaffold(
                 modifier = modifier,
                 parentNavController = navController,
