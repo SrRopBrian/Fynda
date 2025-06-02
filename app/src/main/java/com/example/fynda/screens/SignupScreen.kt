@@ -19,6 +19,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Call
 import androidx.compose.material.icons.rounded.Email
@@ -30,6 +32,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -51,6 +54,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,13 +72,14 @@ fun SignupScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    // State variables for user input
+    // State variables for user input & password visibility
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
     var userRole by remember { mutableStateOf("Client") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
 
     // Observing authentication state
     val authState = authViewModel.authState.observeAsState()
@@ -162,24 +167,6 @@ fun SignupScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
-            },
-            label = {
-                Text(text = "Password", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-            ),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
             value = phoneNumber,
             onValueChange = { phoneNumber = it},
             leadingIcon = {
@@ -210,6 +197,31 @@ fun SignupScreen(
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
             )
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = {password = it},
+            leadingIcon = {
+                Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
+            },
+            label = {
+                Text(text = " Set Password", style = MaterialTheme.typography.labelSmall)
+            },
+            textStyle = MaterialTheme.typography.labelSmall.copy(
+                fontFamily = LexendFontFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp
+            ),
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                val description = if (isPasswordVisible) "Hide Password" else "Show Password"
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(imageVector = icon, contentDescription = description)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
