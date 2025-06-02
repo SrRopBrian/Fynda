@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Button
@@ -21,6 +27,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -36,12 +43,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fynda.AuthState
 import com.example.fynda.R
 import com.example.fynda.ui.theme.LexendFontFamily
-
 
 @Composable
 fun LoginScreen(
@@ -49,19 +57,20 @@ fun LoginScreen(
     navController: NavController,
     authViewModel: AuthViewModel
 ) {
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+    val scrollState = rememberScrollState()
 
+    // User Input state variables
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    var isPasswordVisible by remember { mutableStateOf(false) }
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
+    // if a user is authenticated, navigate to the Home Screen, otherwise show error message
     LaunchedEffect(authState.value) {
         when (authState.value) {
-            is AuthState.Authenticated -> navController.navigate("Main")
+            is AuthState.Authenticated -> navController.navigate("Home")
             is AuthState.Error -> Toast.makeText(
                 context,
                 (authState.value as AuthState.Error).message,
@@ -73,23 +82,25 @@ fun LoginScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .imePadding()
+            .navigationBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Logo
         Card(
             modifier = modifier
-                .fillMaxWidth(0.75f)
-                .padding(bottom = 16.dp),
+                .fillMaxWidth(0.85f)
+                .padding(16.dp),
             shape = RoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 5.dp
             )
         ) {
-            Box(
-                modifier = Modifier
-                    .height(150.dp)
-            ) {
+            Box(modifier = Modifier.height(150.dp)) {
                 Image(
                     painter = painterResource(id = R.drawable.fynda_logo2),
                     contentDescription = "Fynda Logo",
@@ -97,6 +108,7 @@ fun LoginScreen(
                 )
             }
         }
+
         Text(
             text="Welcome Back",
             style = MaterialTheme.typography.headlineLarge
@@ -106,6 +118,7 @@ fun LoginScreen(
         Text(text = "Login to your account", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Input fields
         OutlinedTextField(
             value = email,
             onValueChange = {email = it },leadingIcon = {
@@ -130,12 +143,20 @@ fun LoginScreen(
             label = {
                 Text(text = "Password", style = MaterialTheme.typography.labelSmall)
             },
+
             textStyle = MaterialTheme.typography.labelSmall.copy(
                 fontFamily = LexendFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
             ),
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                val description = if (isPasswordVisible) "Hide Password" else "Show Password"
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(imageVector = icon, contentDescription = description)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -151,6 +172,7 @@ fun LoginScreen(
             Text(text = "Login", style = MaterialTheme.typography.labelLarge)
         }
         Spacer(modifier = Modifier.height(8.dp))
+
         TextButton(onClick = {
             navController.navigate("Signup")
         }) {
