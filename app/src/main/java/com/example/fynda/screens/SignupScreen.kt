@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -53,6 +55,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -133,96 +136,122 @@ fun SignupScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // User Inputs
-        OutlinedTextField(
-            value = userName,
-            onValueChange = { userName = it },
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.AccountCircle, contentDescription = null)
-            },
-            label = {
-                Text(text = "Username", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+        Column(
+            modifier = modifier.fillMaxWidth(0.75f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OutlinedTextField(
+                value = userName,
+                onValueChange = { userName = it },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.AccountCircle, contentDescription = null)
+                },
+                singleLine = true,
+                label = {
+                    Text(text = "Username", style = MaterialTheme.typography.labelSmall)
+                },
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Email, contentDescription = null)
-            },
-            label = {
-                Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Email, contentDescription = null)
+                },
+                label = {
+                    Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it},
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Call, contentDescription = null)
-            },
-            label = {
-                Text(text = "Phone Number", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it},
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Call, contentDescription = null)
+                },
+                label = {
+                    Text(text = "Phone Number", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = location,
-            onValueChange = { location = it},
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Place, contentDescription = null)
-            },
-            label = {
-                Text(text = "Location", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+            OutlinedTextField(
+                value = location,
+                onValueChange = { location = it},
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Place, contentDescription = null)
+                },
+                label = {
+                    Text(text = "Location", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
-            },
-            label = {
-                Text(text = " Set Password", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-            ),
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                val description = if (isPasswordVisible) "Hide Password" else "Show Password"
-                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                    Icon(imageVector = icon, contentDescription = description)
+            OutlinedTextField(
+                value = password,
+                onValueChange = {password = it},
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
+                },
+                label = {
+                    Text(text = " Set Password", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                    val description = if (isPasswordVisible) "Hide Password" else "Show Password"
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(imageVector = icon, contentDescription = description)
+                    }
                 }
-            }
-        )
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
        // User Role selection

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -42,9 +43,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fynda.AuthState
@@ -119,45 +120,58 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Input fields
-        OutlinedTextField(
-            value = email,
-            onValueChange = {email = it },leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Email, contentDescription = null)
-            },
-            label = {
-                Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+        Column(
+            modifier = modifier.fillMaxWidth(0.75f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            OutlinedTextField(
+                value = email,
+                onValueChange = {email = it },leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Email, contentDescription = null)
+                },
+                label = {
+                    Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it }, leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
-            },
-            label = {
-                Text(text = "Password", style = MaterialTheme.typography.labelSmall)
-            },
-
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-            ),
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                val description = if (isPasswordVisible) "Hide Password" else "Show Password"
-                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                    Icon(imageVector = icon, contentDescription = description)
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it }, leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
+                },
+                label = {
+                    Text(text = "Password", style = MaterialTheme.typography.labelSmall)
+                },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                    val description = if (isPasswordVisible) "Hide Password" else "Show Password"
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(imageVector = icon, contentDescription = description)
+                    }
                 }
-            }
-        )
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
