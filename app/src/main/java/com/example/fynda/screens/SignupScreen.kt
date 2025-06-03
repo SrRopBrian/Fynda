@@ -56,6 +56,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -184,7 +185,11 @@ fun SignupScreen(
 
             OutlinedTextField(
                 value = phoneNumber,
-                onValueChange = { phoneNumber = it},
+                onValueChange = {
+                    if (it.length <= 10) {
+                        phoneNumber = it
+                    }
+                },
                 leadingIcon = {
                     Icon(imageVector = Icons.Rounded.Call, contentDescription = null)
                 },
@@ -198,6 +203,7 @@ fun SignupScreen(
                     fontSize = 16.sp
                 ),
                 keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 )
             )
@@ -240,7 +246,7 @@ fun SignupScreen(
                     fontSize = 16.sp
                 ),
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Done
                 ),
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
