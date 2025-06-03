@@ -134,11 +134,7 @@ fun LoginScreen(
                     Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )
@@ -154,11 +150,7 @@ fun LoginScreen(
                     Text(text = "Password", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),

@@ -152,11 +152,7 @@ fun SignupScreen(
                 label = {
                     Text(text = "Username", style = MaterialTheme.typography.labelSmall)
                 },
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )
@@ -172,11 +168,7 @@ fun SignupScreen(
                     Text(text = "Email address", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )
@@ -197,11 +189,7 @@ fun SignupScreen(
                     Text(text = "Phone Number", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
@@ -219,11 +207,7 @@ fun SignupScreen(
                     Text(text = "Location", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )
@@ -240,11 +224,7 @@ fun SignupScreen(
                     Text(text = " Set Password", style = MaterialTheme.typography.labelSmall)
                 },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontFamily = LexendFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
