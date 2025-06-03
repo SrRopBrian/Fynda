@@ -76,7 +76,7 @@ fun BottomNavigationScaffold(
                 modifier = Modifier.height(60.dp),
                 containerColor = Color(0xFFD8EDFF)
             ) {
-                bottomNavItems.forEachIndexed { index, item ->
+                bottomNavItems.forEachIndexed { _, item ->
                     NavigationBarItem(
                         selected = currentRoute == item.title,
                         onClick = {
