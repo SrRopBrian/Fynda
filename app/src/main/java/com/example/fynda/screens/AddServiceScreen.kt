@@ -80,7 +80,7 @@ fun ServiceCategoryDropDown(
     ) {
         OutlinedTextField(
             value = selectedCategory,
-            onValueChange = { },
+            onValueChange = { }, // allow no direct text input
             label = { Text("Category", style = MaterialTheme.typography.labelSmall)},
             readOnly = true,
             trailingIcon = {
@@ -120,14 +120,16 @@ fun AddServiceScreen(
     var startTime by remember { mutableStateOf("") }
     var endTime by remember { mutableStateOf("") }
     var availableDays by remember { mutableStateOf("") }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val imageUri by remember { mutableStateOf<Uri?>(null) }
 
     fun showTimePicker(onTimeSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         val timePickerDialog = TimePickerDialog(
             context,
             { _, hourOfDay, minute ->
-                val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
+                val amPm = if (hourOfDay < 12) "AM" else "PM"
+                val formattedHour = if (hourOfDay == 0 || hourOfDay == 12) 12 else hourOfDay % 12
+                val formattedTime = String.format("%02d:%02d %s", formattedHour, minute, amPm)
                 onTimeSelected(formattedTime)
             },
             calendar.get(Calendar.HOUR_OF_DAY),
@@ -162,7 +164,7 @@ fun AddServiceScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.services),
-                contentDescription = "Services",
+                contentDescription = "Services Image",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -174,98 +176,102 @@ fun AddServiceScreen(
         Text(text = "Add a New service", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(14.dp))
 
-        OutlinedTextField(
-            value = serviceName,
-            onValueChange = { serviceName = it },
-            supportingText = { Text("e.g. Plumbing", style = MaterialTheme.typography.bodySmall)},
-            label = { Text("Service Name", style = MaterialTheme.typography.labelSmall) },
-            textStyle = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        val categories =
-            listOf("Plumbing", "Electric Works", "Carpentry", "Cleaning", "Gardening", "Others")
-        ServiceCategoryDropDown(categories = categories, onCategorySelected = { selectedCategory ->
-            category = selectedCategory
-        })
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = description,
-            onValueChange = { description = it },
-            supportingText = { Text("e.g. Repair, Installation and Maintenance", style = MaterialTheme.typography.bodySmall) },
-            label = { Text("Service Details", style = MaterialTheme.typography.labelSmall) },
-            singleLine = false,
-            maxLines = 5,
-            textStyle = MaterialTheme.typography.bodyMedium,
+        Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = availableDays,
-            onValueChange = { availableDays = it },
-            supportingText = { Text("e.g. 'Monday - Friday'", style = MaterialTheme.typography.bodySmall) },
-            label = { Text("Working Days", style = MaterialTheme.typography.labelSmall) },
-            textStyle = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(0.78f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .fillMaxWidth(0.75f),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Start-Time Picker
             OutlinedTextField(
-                value = startTime,
-                onValueChange = {}, // Read-only
-                label = { Text("Start Time", style = MaterialTheme.typography.labelSmall ) },
-                textStyle = MaterialTheme.typography.bodyMedium,
-                trailingIcon = {
-                    IconButton(onClick = {
-                        showTimePicker { time ->
-                            startTime = time
-                        }
-                    }) {
-                        Icon(Icons.Default.Add, contentDescription = "Pick Start Time")
-                    }
-                },
-                modifier = Modifier.weight(1f)
+                value = serviceName,
+                onValueChange = { serviceName = it },
+                supportingText = { Text("e.g. Plumbing", style = MaterialTheme.typography.bodySmall)},
+                label = { Text("Service Name", style = MaterialTheme.typography.labelSmall) },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.bodyMedium
             )
 
-            // End-Time Picker
+            val categories =
+                listOf("Plumbing", "Electric Works", "Carpentry", "Cleaning", "Gardening", "Others")
+            ServiceCategoryDropDown(categories = categories, onCategorySelected = { selectedCategory ->
+                category = selectedCategory
+            })
+
             OutlinedTextField(
-                value = endTime,
-                onValueChange = {}, // Read-only
-                label = { Text("End Time",  style = MaterialTheme.typography.labelSmall) },
+                value = description,
+                onValueChange = { description = it },
+                supportingText = { Text("e.g. Repair, Installation and Maintenance", style = MaterialTheme.typography.bodySmall) },
+                label = { Text("Service Details", style = MaterialTheme.typography.labelSmall) },
+                singleLine = false,
+                maxLines = 5,
                 textStyle = MaterialTheme.typography.bodyMedium,
-                trailingIcon = {
-                    IconButton(onClick = {
-                        showTimePicker { time ->
-                            endTime = time
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.surface)
+            )
+
+            OutlinedTextField(
+                value = availableDays,
+                onValueChange = { availableDays = it },
+                supportingText = { Text("e.g. 'Monday - Friday'", style = MaterialTheme.typography.bodySmall) },
+                label = { Text("Working Days", style = MaterialTheme.typography.labelSmall) },
+                singleLine = true,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.surface)
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Start-Time Picker
+                OutlinedTextField(
+                    value = startTime,
+                    onValueChange = {}, // Read-only
+                    label = { Text("Open from", style = MaterialTheme.typography.labelSmall)},
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            showTimePicker { time ->
+                                startTime = time
+                            }
+                        }) {
+                            Icon(Icons.Default.Add, contentDescription = "Pick Start Time")
                         }
-                    }) {
-                        Icon(Icons.Default.Add, contentDescription = "Pick End Time")
-                    }
-                },
-                modifier = Modifier.weight(1f)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+
+                // End-Time Picker
+                OutlinedTextField(
+                    value = endTime,
+                    onValueChange = {}, // Read-only
+                    label = { Text("Closes at",  style = MaterialTheme.typography.labelSmall) },
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            showTimePicker { time ->
+                                endTime = time
+                            }
+                        }) {
+                            Icon(Icons.Default.Add, contentDescription = "Pick End Time")
+                        }
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            OutlinedTextField(
+                value = cost,
+                onValueChange = { cost = it },
+                supportingText = { Text("e.g. Ksh. 1000 per hour", style = MaterialTheme.typography.bodySmall) },
+                label = { Text("Service Cost",  style = MaterialTheme.typography.labelSmall) },
+                textStyle = MaterialTheme.typography.bodyMedium,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.surface)
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = cost,
-            onValueChange = { cost = it },
-            supportingText = { Text("e.g. Ksh. 1000", style = MaterialTheme.typography.bodySmall) },
-            label = { Text("Service Cost",  style = MaterialTheme.typography.labelSmall) },
-            textStyle = MaterialTheme.typography.bodyMedium,
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
