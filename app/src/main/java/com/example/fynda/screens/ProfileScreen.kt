@@ -66,7 +66,7 @@ fun ProfileScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
             Image(
-                painter = painterResource(id = R.drawable.profile2),
+                painter = painterResource(id = R.drawable.user),
                 contentDescription = "Fynda Logo",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
