@@ -76,49 +76,54 @@ fun ProfileScreen(
 
             )
         }
-        Spacer(modifier = Modifier.height(90.dp))
+        Spacer(modifier = Modifier.height(80.dp))
 
-        Text(text = "Profile", style = MaterialTheme.typography.headlineLarge)
+        Text(text = "User Profile", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(16.dp))
 
         // user input fields
-        OutlinedTextField(
-            value = userName,
-            onValueChange = { userName = it },
-            label = { Text("Name", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.8f),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OutlinedTextField(
+                value = userName,
+                onValueChange = { userName = it },
+                label = { Text("Name", style = MaterialTheme.typography.labelSmall)
+                },
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            label = { Text("Phone Number", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = { Text("Phone Number", style = MaterialTheme.typography.labelSmall)
+                },
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = location,
-            onValueChange = { location = it },
-            label = { Text("Location", style = MaterialTheme.typography.labelSmall)
-            },
-            textStyle = MaterialTheme.typography.labelSmall.copy(
-                fontFamily = LexendFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
+            OutlinedTextField(
+                value = location,
+                onValueChange = { location = it },
+                label = { Text("Location", style = MaterialTheme.typography.labelSmall)
+                },
+                textStyle = MaterialTheme.typography.labelSmall.copy(
+                    fontFamily = LexendFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                )
             )
-        )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         // Save Button
