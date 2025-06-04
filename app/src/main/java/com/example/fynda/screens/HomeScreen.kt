@@ -52,16 +52,5 @@ fun HomeScreen(
         ) {
             Text(text = "Sign Out")
         }
-
-        Button(
-            onClick = {
-                navController.navigate("Profile")
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary, contentColor = Color.White
-            ),
-        ) {
-            Text(text = "Edit Profile")
-        }
     }
 }
