@@ -1,4 +1,4 @@
-package com.example.fynda.features.services
+package com.example.fynda.features.services.ui
 
 import android.app.TimePickerDialog
 import android.net.Uri
