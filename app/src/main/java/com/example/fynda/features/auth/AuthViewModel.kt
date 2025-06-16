@@ -50,6 +50,10 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun getUserId():String {
+        return auth.currentUser?.uid ?: ""
+    }
+
     private fun fetchUserProfile() {
         // get userId and prevent crashing if not existent
         val userId = auth.currentUser?.uid ?: return
