@@ -30,7 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fynda.R
 import com.example.fynda.features.auth.AuthViewModel
 import com.example.fynda.features.profile.ProfileScreen
-import com.example.fynda.features.services.AddServiceScreen
+import com.example.fynda.features.services.presentation.AddServiceScreen
 import com.example.fynda.features.home.HomeScreen
 
 data class BottomNavigationItem(
