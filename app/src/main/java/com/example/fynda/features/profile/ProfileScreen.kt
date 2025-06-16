@@ -1,4 +1,4 @@
-package com.example.fynda.screens
+package com.example.fynda.features.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,9 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fynda.AuthViewModel
 import com.example.fynda.R
-import com.example.fynda.ui.theme.LexendFontFamily
+import com.example.fynda.features.auth.AuthViewModel
+import com.example.fynda.core.theme.LexendFontFamily
 
 @Composable
 fun ProfileScreen(

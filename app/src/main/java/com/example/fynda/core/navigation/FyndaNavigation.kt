@@ -1,12 +1,14 @@
-package com.example.fynda
+package com.example.fynda.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.fynda.screens.LoginScreen
-import com.example.fynda.screens.SignupScreen
+import com.example.fynda.core.ui.BottomNavigationScaffold
+import com.example.fynda.features.auth.AuthViewModel
+import com.example.fynda.features.auth.LoginScreen
+import com.example.fynda.features.auth.SignupScreen
 
 @Composable
 fun FyndaNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) {

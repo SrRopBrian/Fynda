@@ -1,4 +1,4 @@
-package com.example.fynda.screens
+package com.example.fynda.features.services
 
 import android.app.TimePickerDialog
 import android.net.Uri
@@ -45,13 +45,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.fynda.AuthViewModel
+import com.example.fynda.features.auth.AuthViewModel
 import com.example.fynda.R
 
 data class Service(

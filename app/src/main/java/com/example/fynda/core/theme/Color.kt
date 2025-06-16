@@ -1,4 +1,4 @@
-package com.example.fynda.ui.theme
+package com.example.fynda.core.theme
 
 import androidx.compose.ui.graphics.Color
 

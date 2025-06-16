@@ -1,4 +1,4 @@
-package com.example.fynda.screens
+package com.example.fynda.features.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fynda.AuthState
-import com.example.fynda.AuthViewModel
+import com.example.fynda.features.auth.AuthState
+import com.example.fynda.features.auth.AuthViewModel
 
 @Composable
 fun HomeScreen(

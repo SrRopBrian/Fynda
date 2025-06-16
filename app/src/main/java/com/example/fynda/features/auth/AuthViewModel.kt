@@ -1,4 +1,4 @@
-package com.example.fynda
+package com.example.fynda.features.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -92,7 +92,9 @@ class AuthViewModel : ViewModel() {
                 _userProfile.value = updatedUser
             }
             .addOnFailureListener { exception ->
-                _authState.value = AuthState.Error(exception.message ?: "Failed to update profile. Please try again.")
+                _authState.value = AuthState.Error(
+                    exception.message ?: "Failed to update profile. Please try again."
+                )
             }
     }
 
@@ -112,7 +114,9 @@ class AuthViewModel : ViewModel() {
                     _authState.value = AuthState.Authenticated
                     fetchUserProfile()
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong! Try again")
+                    _authState.value = AuthState.Error(
+                        task.exception?.message ?: "Oops! Something went wrong! Try again"
+                    )
                 }
             }
     }
@@ -148,7 +152,9 @@ class AuthViewModel : ViewModel() {
                     )
                     saveUserToFirestore(newUser)
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message?:"Oops! Something went wrong! Try again.")
+                    _authState.value = AuthState.Error(
+                        task.exception?.message ?: "Oops! Something went wrong! Try again."
+                    )
                 }
             }
     }
@@ -161,7 +167,9 @@ class AuthViewModel : ViewModel() {
                 _authState.value = AuthState.Authenticated
             }
             .addOnFailureListener { exception ->
-                _authState.value = AuthState.Error(exception.message?:"Oops! Something went wrong!")}
+                _authState.value =
+                    AuthState.Error(exception.message ?: "Oops! Something went wrong!")
+            }
     }
 
     fun signout() {

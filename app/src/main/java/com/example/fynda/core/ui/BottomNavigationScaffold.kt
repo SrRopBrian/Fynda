@@ -1,4 +1,4 @@
-package com.example.fynda
+package com.example.fynda.core.ui
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,9 +27,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.fynda.screens.AddServiceScreen
-import com.example.fynda.screens.HomeScreen
-import com.example.fynda.screens.ProfileScreen
+import com.example.fynda.R
+import com.example.fynda.features.auth.AuthViewModel
+import com.example.fynda.features.profile.ProfileScreen
+import com.example.fynda.features.services.AddServiceScreen
+import com.example.fynda.features.home.HomeScreen
 
 data class BottomNavigationItem(
     val title: String,
