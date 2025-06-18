@@ -1,4 +1,10 @@
 package com.example.fynda.features.services
 
-class ServiceViewModel {
+import androidx.lifecycle.ViewModel
+import com.example.fynda.features.services.presentation.Service
+
+class ServiceViewModel: ViewModel() {
+    fun addService(service: Service) {
+
+    }
 }
