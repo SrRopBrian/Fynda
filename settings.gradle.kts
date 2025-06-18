@@ -1,13 +1,14 @@
 pluginManagement {
     repositories {
+        mavenCentral()
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
                 includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
+                includeGroup("com.google.devtools.ksp")
             }
         }
-        mavenCentral()
         gradlePluginPortal()
     }
 }
