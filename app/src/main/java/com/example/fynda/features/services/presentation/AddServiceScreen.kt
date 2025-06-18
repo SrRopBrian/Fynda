@@ -3,6 +3,7 @@ package com.example.fynda.features.services.presentation
 import android.app.TimePickerDialog
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.background
@@ -45,6 +46,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -56,11 +58,11 @@ data class Service(
     val serviceName: String = "",
     val category: String = "",
     val description: String = "",
-    val cost: Double = 0.0,
+    val cost: String = "",
     val availableDays: String = "",
     val openingHours: String = "",
     val closingHours: String = "",
-    val imageUrl: String? = null
+    val imageUrl: List<String?>? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,10 +117,10 @@ fun AddServiceScreen(
     var category by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var cost by remember { mutableStateOf("") }
-    var startTime by remember { mutableStateOf("") }
-    var endTime by remember { mutableStateOf("") }
+    var openingHours by remember { mutableStateOf("") }
+    var closingHours by remember { mutableStateOf("") }
     var availableDays by remember { mutableStateOf("") }
-    val imageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageUris by remember { mutableStateOf<List<Uri>?>(null) }
 
     fun showTimePicker(onTimeSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
@@ -141,6 +143,7 @@ fun AddServiceScreen(
         contract = PickMultipleVisualMedia(),
         onResult = { uris ->
             if (uris.isNotEmpty()) {
+                imageUris = uris
                 uris.forEach { uri ->
                     Log.d("PhotoPicker", "Selected URI: $uri")
                 }
@@ -224,14 +227,14 @@ fun AddServiceScreen(
             ) {
                 // Start-Time Picker
                 OutlinedTextField(
-                    value = startTime,
+                    value = openingHours,
                     onValueChange = {}, // Read-only
                     label = { Text("Open from", style = MaterialTheme.typography.labelSmall)},
                     textStyle = MaterialTheme.typography.bodyMedium,
                     trailingIcon = {
                         IconButton(onClick = {
                             showTimePicker { time ->
-                                startTime = time
+                                openingHours = time
                             }
                         }) {
                             Icon(Icons.Default.Add, contentDescription = "Pick Start Time")
@@ -242,14 +245,14 @@ fun AddServiceScreen(
 
                 // End-Time Picker
                 OutlinedTextField(
-                    value = endTime,
+                    value = closingHours,
                     onValueChange = {}, // Read-only
                     label = { Text("Closes at",  style = MaterialTheme.typography.labelSmall) },
                     textStyle = MaterialTheme.typography.bodyMedium,
                     trailingIcon = {
                         IconButton(onClick = {
                             showTimePicker { time ->
-                                endTime = time
+                                closingHours = time
                             }
                         }) {
                             Icon(Icons.Default.Add, contentDescription = "Pick End Time")
@@ -259,19 +262,20 @@ fun AddServiceScreen(
                 )
             }
 
+            // cost
             OutlinedTextField(
                 value = cost,
                 onValueChange = { cost = it },
                 supportingText = { Text("e.g. Ksh. 1000 per hour", style = MaterialTheme.typography.bodySmall) },
                 label = { Text("Service Cost",  style = MaterialTheme.typography.labelSmall) },
                 textStyle = MaterialTheme.typography.bodyMedium,
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Image picker
         OutlinedButton(
             onClick = {
                 pickMultipleMedia.launch(
@@ -290,16 +294,24 @@ fun AddServiceScreen(
 
         Button(
             onClick = {
-                val service = Service(
-                    serviceName = serviceName,
-                    category = category,
-                    description = description,
-                    cost = cost.toDouble(),
-                    availableDays = availableDays,
-                    openingHours = startTime,
-                    closingHours = endTime,
-                    imageUrl = imageUri?.toString()
-                )
+                if (serviceName.isBlank() || category.isBlank() || description.isBlank() || cost.isBlank() || availableDays.isBlank() || openingHours.isBlank() || closingHours.isBlank()) {
+                    val text = "Please provide complete details"
+                    val duration = Toast.LENGTH_SHORT
+                    Toast.makeText(context, text, duration).show()
+                } else {
+                    val stringImageUris: List<String>? = imageUris?.map { it.toString() }
+
+                    val service = Service(
+                        serviceName = serviceName,
+                        category = category,
+                        description = description,
+                        cost = cost,
+                        availableDays = availableDays,
+                        openingHours = openingHours,
+                        closingHours = closingHours,
+                        imageUrl = stringImageUris
+                    )
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
