@@ -57,10 +57,10 @@ data class Service(
     val category: String = "",
     val description: String = "",
     val cost: Double = 0.0,
-    val imageUrl: String? = null,
     val availableDays: String = "",
-    val startTime: String = "",
-    val endTime: String = ""
+    val openingHours: String = "",
+    val closingHours: String = "",
+    val imageUrl: String? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -296,8 +296,8 @@ fun AddServiceScreen(
                     description = description,
                     cost = cost.toDouble(),
                     availableDays = availableDays,
-                    startTime = startTime,
-                    endTime = endTime,
+                    openingHours = startTime,
+                    closingHours = endTime,
                     imageUrl = imageUri?.toString()
                 )
             },
