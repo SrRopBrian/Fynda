@@ -76,6 +76,7 @@ fun SignupScreen(
 
     // Observing authentication state
     val authState = authViewModel.authState.observeAsState()
+
     val context = LocalContext.current
 
     // Side effect for authentication state
