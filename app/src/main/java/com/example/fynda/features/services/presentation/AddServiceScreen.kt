@@ -53,17 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.fynda.features.auth.AuthViewModel
 import com.example.fynda.R
-
-data class Service(
-    val serviceName: String = "",
-    val category: String = "",
-    val description: String = "",
-    val cost: String = "",
-    val availableDays: String = "",
-    val openingHours: String = "",
-    val closingHours: String = "",
-    val imageUrl: List<String?>? = null
-)
+import com.example.fynda.features.services.ServiceViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,10 +97,12 @@ fun ServiceCategoryDropDown(
 @Composable
 fun AddServiceScreen(
     navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    serviceViewModel: ServiceViewModel
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val userId = authViewModel.getUserId()
 
     // state variables to capture user input
     var serviceName by remember { mutableStateOf("")}
@@ -294,24 +286,16 @@ fun AddServiceScreen(
 
         Button(
             onClick = {
-                if (serviceName.isBlank() || category.isBlank() || description.isBlank() || cost.isBlank() || availableDays.isBlank() || openingHours.isBlank() || closingHours.isBlank()) {
-                    val text = "Please provide complete details"
-                    val duration = Toast.LENGTH_SHORT
-                    Toast.makeText(context, text, duration).show()
-                } else {
-                    val stringImageUris: List<String>? = imageUris?.map { it.toString() }
-
-                    val service = Service(
-                        serviceName = serviceName,
-                        category = category,
-                        description = description,
-                        cost = cost,
-                        availableDays = availableDays,
-                        openingHours = openingHours,
-                        closingHours = closingHours,
-                        imageUrl = stringImageUris
-                    )
-                }
+                serviceViewModel.addService(
+                    serviceName,
+                    category,
+                    description,
+                    cost,
+                    availableDays,
+                    openingHours,
+                    closingHours,
+                    imageUris,
+                    userId)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
